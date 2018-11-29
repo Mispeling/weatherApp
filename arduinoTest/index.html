@@ -1,0 +1,53 @@
+<head>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<link rel="stylesheet" href="styles.css">
+</head>
+
+<body>
+	<div class="text">
+		<ul id = "myList" class="list-group">
+		</ul>
+    	<br />
+	</div>
+</body>
+<script>
+$(document).ready(function() {
+	setTimeout(function(){new updatePage()},5000)
+});
+	function updatePage(){
+		var update = $.ajax({
+	            url :"http://localhost:3000/log.txt",
+	            dataType: "text",
+	            success : function (data) {
+	            	
+	            		split_line = data.split("\n");
+	            		x= parseInt(split_line.length)
+	            		y= parseInt($("ul#myList li").length)
+	       				z = y-x
+	       				console.log(z)
+
+	            		if(z!=0){
+	            			wow = split_line.slice(z)
+
+	            			
+		            		wow.forEach(function(element) {
+		            			stringToArray = element.split(",")
+		            			valueOfTemp = stringToArray[0];
+		            			valueOfHumidity = element[1];
+		            			console.log(valueOfTemp)
+
+		  						var node = document.createElement("LI");		  						
+								var textnode = document.createTextNode(element);         // Create a text node
+								node.appendChild(textnode);                              // Append the text to <li>
+								document.getElementById("myList").appendChild(node); 
+							});  
+						}
+
+						setTimeout(function(){updatePage()},1000);                
+				}
+
+		})
+		$("ul#myList li").addClass("list-group-item")
+
+	}
+</script>
